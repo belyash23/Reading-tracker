@@ -1,8 +1,8 @@
-import './helpers.js';
-import modal from './modal.js';
-import faq from './faq.js';
-import profile from './profile.js';
-import books from './books.js';
+// import './helpers.js';
+// import modal from './modal.js';
+// import faq from './faq.js';
+// import profile from './profile.js';
+// import books from './books.js';
 
 const app = {
   page: 'faq',

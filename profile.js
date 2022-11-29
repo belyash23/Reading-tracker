@@ -1,4 +1,4 @@
-export default {
+window.profile= {
   app: null,
   modal: null,
   email: null,

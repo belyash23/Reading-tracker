@@ -1,4 +1,4 @@
-export default {
+window.faq= {
   app: null,
   modal: null,
   content: document.querySelector('.content'),

@@ -1,4 +1,4 @@
-export default {
+window.modal= {
   app: null,
   elem: document.querySelector('.modal'),
   status: document.querySelector('.modal__status p'),
