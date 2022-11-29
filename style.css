@@ -2,19 +2,19 @@
   font-family: Inter;
   font-weight: 400;
   font-style: normal;
-  src: url('../fonts/Inter-Regular.ttf');
+  src: url('Inter-Regular.ttf');
 }
 @font-face {
   font-family: Inter;
   font-weight: 200;
   font-style: normal;
-  src: url('../fonts/Inter-ExtraLight.ttf');
+  src: url('Inter-ExtraLight.ttf');
 }
 @font-face {
   font-family: Inter;
   font-weight: 700;
   font-style: normal;
-  src: url('../fonts/Inter-Bold.ttf');
+  src: url('Inter-Bold.ttf');
 }
 
 * {
@@ -83,7 +83,7 @@ option {
 }
 
 body {
-  background: url('../imgs/background.png') repeat;
+  background: url('background.png') repeat;
   display: flex;
   flex-direction: column;
   min-height: 100vh;

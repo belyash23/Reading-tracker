@@ -74,7 +74,7 @@ export default {
       for (const key in data) {
         const book = data[key];
 
-        const poster = book.poster ? book.poster : 'imgs/book.png';
+        const poster = book.poster ? book.poster : 'book.png';
         const name = book.name ? book.name : 'Имя не задано';
         const genre = book.genre ? book.genre : 'Жанр не задан';
         const pages = book.pages;
