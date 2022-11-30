@@ -12,6 +12,7 @@ const app = {
     faq.init(this, modal);
     profile.init(this, modal);
     books.init(this, modal);
+    historyPage.init(this, modal);
 
     document.querySelector('input[type="password"]').value = '';
     helpers.addListener('.menu__item a', 'click', this.turnPage, this);
@@ -60,6 +61,9 @@ const app = {
         case 'books':
           this.showBooks(content);
           break;
+        case 'history':
+          this.showHistory(content);
+          break;
       }
     },100);
 
@@ -93,6 +97,12 @@ const app = {
     books.show();
   },
 
+  showHistory() {
+    this.pageModule.hide();
+    this.pageModule = historyPage;
+    historyPage.show();
+  },
+
   updateContent(content) {
     faq.content = content;
     profile.content = content;
@@ -100,7 +110,6 @@ const app = {
   },
 
   getToken() {
-    // return '197edf8ca7d642315ee04dd6e798b447';
     return sessionStorage.getItem('token');
   }
 }

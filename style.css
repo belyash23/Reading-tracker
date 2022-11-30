@@ -362,6 +362,9 @@ main {
   gap: 10px;
   align-items: center;
 }
+.book__title {
+  text-align: center;
+}
 .book__description {
   color: #000000;
   font-size: 12px;
@@ -494,4 +497,42 @@ footer .copyright {
   color: #e00;
   height: 15px;
   font-size: 15px;
+}
+
+.history {
+  margin-top: 40px;
+  width: 100%;
+  table-layout: fixed;
+}
+.history tr {
+  height: 50px;
+}
+.history td+td {
+  border-left: 2px solid #7E3D1E;
+}
+.history td {
+  vertical-align: middle;
+  text-align: center;
+}
+.history tr:nth-child(odd) {
+  background: #DEB887;
+}
+
+.autocomplete-results {
+  z-index: 999;
+  background: #FFEFD5;
+}
+
+.autocomplete-result {
+  min-height: 30px;
+  padding: 10px;
+  border: 1px solid #663118;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-top-width: 0;
+  cursor: pointer;
+}
+.autocomplete-result:nth-child(1) {
+  border-top-width: 1px;
 }

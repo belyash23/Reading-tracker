@@ -10,42 +10,23 @@ window.books= {
     this.modal = modal;
 
     helpers.addListener('.add-book', 'click', this.showAddBookModal, this);
-    // helpers.addListener('.book_query', 'input', this.autocomplete, this);
 
-    new Autocomplete('#autocomplete', {
+    let lastInputTime = 0;
+    const delay = 1000;
+    // const getAutocompleteDataDebounce = helpers.debounce(this.getAutocompleteData.bind(this), 100);
+  new Autocomplete('#autocomplete', {
+      // search: async function (input) {
+      //   return _.debounce(async function () {
+      //     console.log(input);
+      //   }.bind(this, input), 1);
+      // }.bind(this)
       search: async function (input) {
-        this.autocompleteData = [];
-        this.books = [];
-        if (!input) return [];
-        const response = await fetch(helpers.constants.baseApiUrl + 'search_book?' + this.getSearchBookParams(input))
-        const json = await response.json();
-        console.log(json);
-        if (json.errors) return [];
-        
-        let itemCounts = 0;
-
-        json.forEach(function(item) {
-          if (itemCounts === 4) return;
-          this.autocompleteData.push(item.name);
-          this.books[item.name] = item;
-          itemCounts++;        
-        }.bind(this));
-        return this.autocompleteData;
-      }.bind(this)
+        const data = await this.getAutocompleteData(input);
+        console.log(data);
+        if (!data) return [];
+        return data;
+      }.bind(this),
     });
-
-    // const autoCompleteJS = new autoComplete({
-    //   selector: '#autocomplete',
-    //   placeholder: 'Введите название',
-    //   data: {
-    //     src: async query => {
-    //       console.log(query);
-    //       return ['aqwe', 'bqwe', 'cqwe'];
-    //     },
-    //     keys: ['qa','wa','ea'],
-    //     cache: false,
-    //   }
-    // });
   },
 
   hide() {
@@ -131,20 +112,48 @@ window.books= {
     return formData;
   },
 
-  // autocomplete() {
-  //   const books = [
-  //     id: 1,
-  //     name: 'qwe',
-  //   ];
+  getAutocompleteData: _.debounce(async function(input) {
+    console.log(input);
+    this.autocompleteData = [];
+    this.books = [];
+    if (!input) return [];
+    const response = await fetch(helpers.constants.baseApiUrl + 'search_book?' + this.getSearchBookParams(input))
+    const json = await response.json();
+    console.log(json);
+    if (json.errors) return [];
+    
+    let itemCounts = 0;
 
-  //   let options = '<option value="" hidden>Не выбрано</option>';
-  //     for (const key in data) {
-  //       const book = data[key];
-  //       options += `<option value="${book.id}">${book.name}</option>`;
+    let autocompleteData = [];
 
-        
-  //     }
+    json.forEach(function(item) {
+      if (itemCounts === 4) return;
+      autocompleteData.push(item.name);
+      this.books[item.name] = item;
+      itemCounts++;        
+    }.bind(this));
+    console.log(autocompleteData)
+    return autocompleteData;
+  }, 300, {leading: true}),
 
-  //     document.querySelector('.add-pages-form select').innerHTML = options;
+  // async getAutocompleteData(input) {
+  //   console.log(input);
+  //   this.autocompleteData = [];
+  //   this.books = [];
+  //   if (!input) return [];
+  //   const response = await fetch(helpers.constants.baseApiUrl + 'search_book?' + this.getSearchBookParams(input))
+  //   const json = await response.json();
+  //   console.log(json);
+  //   if (json.errors) return [];
+    
+  //   let itemCounts = 0;
+
+  //   json.forEach(function(item) {
+  //     if (itemCounts === 4) return;
+  //     this.autocompleteData.push(item.name);
+  //     this.books[item.name] = item;
+  //     itemCounts++;        
+  //   }.bind(this));
+  //   return this.autocompleteData;
   // }
 }
