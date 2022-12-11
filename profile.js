@@ -4,6 +4,7 @@ window.profile= {
   email: null,
   password: null,
   timestampStart: null,
+  filters: {},
   content: document.querySelector('.content'),
 
   init(app, modal) {
@@ -12,6 +13,9 @@ window.profile= {
 
     helpers.addListener('.add-pages', 'click', this.showAddPagesModal, this);
     helpers.addListener('.open-profile', 'click', this.showUpdateProfileModal, this);
+
+    this.updateBooks();
+  
   },
 
   hide() {
@@ -19,6 +23,12 @@ window.profile= {
   },
 
   show() {
+    filters.elem = this.getPanel();
+    filters.onChange = function (filters) {
+      this.filters = filters;
+      this.updateData();
+    }.bind(this);
+    
     helpers.show(this.getPanel());
     this.updateData();
   },
@@ -29,6 +39,9 @@ window.profile= {
 
   updateData() {
     fetch(helpers.constants.baseApiUrl + 'get_profit?' + this.getUpdateDataParams(), {
+      headers: {
+        token: this.app.getToken(),
+      },
       method: 'GET',
     }).then(function (response) {
       return response.json();
@@ -53,6 +66,9 @@ window.profile= {
 
   updateProfileData() {
     fetch(helpers.constants.baseApiUrl + 'get_profile?' + this.getGetProfileData(), {
+      headers: {
+        token: this.app.getToken(),
+      },
       method: 'GET',
     }).then(function (response) {
       return response.json();
@@ -82,21 +98,17 @@ window.profile= {
   },
 
   getUpdateDataParams() {
-    return new URLSearchParams({
-      token: this.app.getToken(),
-    })
+    return new URLSearchParams(this.filters)
   },
 
   getUpdateBooksParams() {
     return new URLSearchParams({
       in_progress: 1,
-      token: this.app.getToken(),
     })
   },
 
   getGetProfileData() {
     return new URLSearchParams({
-      token: this.app.getToken(),
     })
   },
 
@@ -124,7 +136,6 @@ window.profile= {
 
   processAddPagesForm(formData) {
     formData.set('timestamp', Date.parse(formData.get('timestamp'))/1000);
-    formData.set('token', this.app.getToken());
 
     return formData;
   },
@@ -134,13 +145,15 @@ window.profile= {
     formData.set('timestamp_end', Date.parse(formData.get('timestamp_end'))/1000);
     formData.set('email', this.email);
     formData.set('password', this.password);
-    formData.set('token', this.app.getToken());
 
     return formData;
   },
 
   updateBooks() {
     fetch(helpers.constants.baseApiUrl + 'get_books_list?' + this.getUpdateBooksParams(), {
+      headers: {
+        token: this.app.getToken(),
+      },
       method: 'GET',
     }).then(function (response) {
       return response.json();
@@ -150,12 +163,11 @@ window.profile= {
       let options = '<option value="" hidden>Не выбрано</option>';
       for (const key in data) {
         const book = data[key];
-        options += `<option value="${book.id}">${book.name}</option>`;
-
-        
+        options += `<option value="${book.id}">${book.name}</option>`;        
       }
 
       document.querySelector('.add-pages-form select').innerHTML = options;
+      document.querySelectorAll('select[name="filter_book"]').forEach(item => item.innerHTML = options);
     }.bind(this));
   }
 }

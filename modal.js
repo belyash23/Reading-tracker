@@ -154,6 +154,9 @@ window.modal= {
       }
       
       fetch(helpers.constants.baseApiUrl + this.currentForm.getAttribute('action'), {
+        headers: {
+          token: this.app.getToken(),
+        },
         method: 'POST',
         body: formData
       }).then(function (response) {

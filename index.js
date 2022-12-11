@@ -13,9 +13,27 @@ const app = {
     profile.init(this, modal);
     books.init(this, modal);
     historyPage.init(this, modal);
+    filters.init();
 
-    document.querySelector('input[type="password"]').value = '';
+    document.querySelectorAll('input[type="password"]').value = '';
     helpers.addListener('.menu__item a', 'click', this.turnPage, this);
+
+
+    $('input[type="dates"]').on('apply.daterangepicker', function (ev, picker) {
+        // if (picker.startDate.length && picker.endDate.length) {
+          $(this).val(picker.startDate.format(picker.locale.format) + ' - ' + picker.endDate.format(picker.locale.format));
+        // }
+    });
+
+    $('input[type="dates"]').on('cancel.daterangepicker', function (ev, picker) {
+        $(this).val('');
+    });
+    $('input[type="dates"]').daterangepicker({
+      autoUpdateInput: false,
+      locale: {
+        format: 'DD.MM.YYYY',
+      },
+    });
 
     this.pageModule = faq;
   },

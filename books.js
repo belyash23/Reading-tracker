@@ -45,6 +45,9 @@ window.books= {
 
   updateData() {
     fetch(helpers.constants.baseApiUrl + 'get_books_list?' + this.getUpdateBooksParams(), {
+      headers: {
+        token: this.app.getToken(),
+      },
       method: 'GET',
     }).then(function (response) {
       return response.json();
@@ -76,14 +79,12 @@ window.books= {
 
   getUpdateBooksParams() {
     return new URLSearchParams({
-      token: this.app.getToken(),
     })
   },
 
   getSearchBookParams(input) {
     return new URLSearchParams({
       query: input,
-      token: this.app.getToken(),
     })
   },
 
@@ -117,7 +118,7 @@ window.books= {
     this.autocompleteData = [];
     this.books = [];
     if (!input) return [];
-    const response = await fetch(helpers.constants.baseApiUrl + 'search_book?' + this.getSearchBookParams(input))
+    const response = await fetch(helpers.constants.baseApiUrl + 'search_book?' + this.getSearchBookParams(input), {headers: {token: this.app.getToken()}})
     const json = await response.json();
     console.log(json);
     if (json.errors) return [];

@@ -1,6 +1,7 @@
 window.historyPage= {
   app: null,
   modal: null,
+  filters: {},
   content: document.querySelector('.content'),
 
   init(app, modal) {
@@ -13,6 +14,12 @@ window.historyPage= {
   },
 
   show() {
+    filters.elem = this.getPanel();
+    filters.onChange = function (filters) {
+      this.filters = filters;
+      this.updateData();
+    }.bind(this);
+    
     helpers.show(this.getPanel());
 
     this.updateData();
@@ -24,6 +31,9 @@ window.historyPage= {
 
   updateData() {
     fetch(helpers.constants.baseApiUrl + 'get_story_reads?' + this.getGetStoryReadsParams(), {
+      headers: {
+        token: this.app.getToken(),
+      },
       method: 'GET',
     }).then(function (response) {
       return response.json();
@@ -55,8 +65,6 @@ window.historyPage= {
   },
 
   getGetStoryReadsParams() {
-    return new URLSearchParams({
-      token: this.app.getToken(),
-    })
+    return new URLSearchParams(this.filters)
   },
 }
